@@ -1,0 +1,56 @@
+connected to /tmp/node1
+connected to /tmp/node2
+connected to /tmp/node3
+
+perform basic checks
+
+/tmp/node1: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:26 (expected at least 1)
+/tmp/node2: message:"govobj_accepted:7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140", count:1 (expected 1)
+/tmp/node3: message:"govobj_accepted:7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140", count:1 (expected 1)
+/tmp/node2: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:26 (expected at least 1)
+/tmp/node3: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:26 (expected at least 1)
+
+waiting 15 seconds
+try send duplicate object
+verify that duplicate has not relayed
+
+/tmp/node1: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:26 (expected no more than 26)
+/tmp/node2: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:31 (expected no more than 31)
+/tmp/node3: message:"push_inventory:govobj 7a78628064a4a31aa2d359a684886ea3515f1fa4d8a9e2129c7599f10d64b140" count:29 (expected no more than 29)
+
+check rate limit (4 objects in 4 seconds)
+
+/tmp/node2: message:"govobj_accepted:a573c0ad4d79bb816d38066702541e8d50293e5dfc58cec7a4521af79f484c46", count:1 (expected 1)
+/tmp/node3: message:"govobj_accepted:a573c0ad4d79bb816d38066702541e8d50293e5dfc58cec7a4521af79f484c46", count:1 (expected 1)
+/tmp/node2: message:"govobj_accepted:044a040c5927d76d79086c4de3fc1a0d4407d1f3a1c792bc79412e3c3fbc0789", count:1 (expected 1)
+/tmp/node3: message:"govobj_accepted:044a040c5927d76d79086c4de3fc1a0d4407d1f3a1c792bc79412e3c3fbc0789", count:1 (expected 1)
+/tmp/node2: message:"govobj_accepted:d74928cbce239fa644736a534748525710452ef62fa4a15b9900ea39134573dd", count:1 (expected 1)
+/tmp/node3: message:"govobj_accepted:d74928cbce239fa644736a534748525710452ef62fa4a15b9900ea39134573dd", count:1 (expected 1)
+
+check rate limit (5 objects in 5 seconds)
+
+/tmp/node2: message:"rate_too_high:0b6a93c1fd2dde5b179e06e8714dadd7f7e692559f1a9de8010725f88ff5eabd" count:1 (expected at least 1)
+/tmp/node3: message:"rate_too_high:0b6a93c1fd2dde5b179e06e8714dadd7f7e692559f1a9de8010725f88ff5eabd" count:1 (expected at least 1)
+/tmp/node2: message:"govobj_accepted:0b6a93c1fd2dde5b179e06e8714dadd7f7e692559f1a9de8010725f88ff5eabd" count:0 (expected no more than 0)
+/tmp/node3: message:"govobj_accepted:0b6a93c1fd2dde5b179e06e8714dadd7f7e692559f1a9de8010725f88ff5eabd" count:0 (expected no more than 0)
+
+check rate limit (5 objects in (nSuperblockCycleSeconds*5/2.2)-1 seconds)
+wait 8.46666666667 minutes
+
+/tmp/node2: message:"rate_too_high:2251c703dfa4a60dcdc6fced535668eea4e1266ba88e8168ba11f76facbe4669" count:1 (expected at least 1)
+/tmp/node3: message:"rate_too_high:2251c703dfa4a60dcdc6fced535668eea4e1266ba88e8168ba11f76facbe4669" count:1 (expected at least 1)
+/tmp/node2: message:"govobj_accepted:2251c703dfa4a60dcdc6fced535668eea4e1266ba88e8168ba11f76facbe4669" count:0 (expected no more than 0)
+/tmp/node3: message:"govobj_accepted:2251c703dfa4a60dcdc6fced535668eea4e1266ba88e8168ba11f76facbe4669" count:0 (expected no more than 0)
+
+check rate limit (5 objects in (nSuperblockCycleSeconds*5/2.2)+1 seconds)
+
+/tmp/node2: message:"rate_too_high:592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:0 (expected no more than 0)
+/tmp/node3: message:"rate_too_high:592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:0 (expected no more than 0)
+/tmp/node2: message:"govobj_accepted:592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:1 (expected at least 1)
+/tmp/node3: message:"govobj_accepted:592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:1 (expected at least 1)
+/tmp/node2: message:"push_inventory:govobj 592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:31 (expected at least 1)
+/tmp/node3: message:"push_inventory:govobj 592ba698a51ba0aa1f7b931c61d05a68f57665c9258b64457b461765de6e573d" count:29 (expected at least 1)
+
+check for errors
+
+TEST SUCCEEDED

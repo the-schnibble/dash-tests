@@ -1,0 +1,48 @@
+connected to /tmp/node1
+connected to /tmp/node2
+connected to /tmp/node3
+
+try to submit proposal with 0 confirmations
+collateral tx hash: 0463c5b7194605e598441422a3dc99c7c96df4c943dd047310646ae2d8c43add
+
+/tmp/node1: message:"push_inventory:tx 0463c5b7194605e598441422a3dc99c7c96df4c943dd047310646ae2d8c43add" count:26 (expected at least 1)
+
+proposal hash: 4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d
+
+/tmp/node1: message:"push_inventory:govobj 4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d" count:26 (expected at least 1)
+/tmp/node2: message:"govobj_received:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:1 (expected 1)
+/tmp/node3: message:"govobj_received:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:1 (expected 1)
+/tmp/node2: message:"govobj_accepted:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:0 (expected 0)
+/tmp/node3: message:"govobj_accepted:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:0 (expected 0)
+/tmp/node2: message:"govobj_missing_confs:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:0 (expected 0)
+/tmp/node3: message:"govobj_missing_confs:4a24d74cf14b33f198be34c737c2d66a11ea0ee01be50f5115753c4ed9ede60d", count:0 (expected 0)
+
+create new proposal
+new collateral tx hash: 5dc318002333fe0828509b0af3864f11551b56745106f920c602dc97a4ccc039
+
+/tmp/node2: message:"push_inventory:tx 5dc318002333fe0828509b0af3864f11551b56745106f920c602dc97a4ccc039" count:26 (expected at least 1)
+
+waiting for 1 confirmation
+
+/tmp/node2: message:"update_block_tip:49544", count:1 (expected 1)
+
+submit proposal with 1 confirmation
+new proposal hash: 31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69
+
+/tmp/node2: message:"push_inventory:govobj 31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69" count:26 (expected at least 1)
+/tmp/node3: message:"govobj_missing_confs:31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:1 (expected 1)
+/tmp/node2: message:"govobj_accepted:31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:0 (expected 0)
+/tmp/node3: message:"govobj_accepted:31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:0 (expected 0)
+/tmp/node3: message:"push_inventory:govobj 31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:0 (expected 0)
+
+waiting for 6 confirmations
+
+/tmp/node1: message:"update_block_tip:49549", count:1 (expected 1)
+/tmp/node2: message:"govobj_accepted:31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:1 (expected 1)
+/tmp/node3: message:"govobj_accepted:31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69", count:1 (expected 1)
+/tmp/node2: message:"push_inventory:govobj 31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69" count:52 (expected at least 1)
+/tmp/node3: message:"push_inventory:govobj 31c802c4fcc5c53e3a8697bb4f1c1bcea87750c0a0e8373f16da6dbdf7a68a69" count:26 (expected at least 1)
+
+check for errors
+
+TEST SUCCEEDED
