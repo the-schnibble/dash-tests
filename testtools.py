@@ -115,6 +115,9 @@ class LogListener(threading.Thread):
                     
     def close(self):
         self.is_running = False
+        fifo = open(self.name, 'w')
+        print >> fifo, "\n"
+        fifo.close()
         self.join()
 
 
