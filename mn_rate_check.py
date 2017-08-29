@@ -13,7 +13,7 @@ def now():
     return int(time.time())
     
 #CTestNetParams
-nPowTargetSpacing = 1 * 60
+nPowTargetSpacing = 2.5 * 60
 
 #node1 should be a masternode started with "-govtest" parameter
 node1 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30001')
@@ -46,9 +46,6 @@ sbobj = Superblock(
 
 ratecheckbuffer = list()
 
-#hash = sbobj.submit(node1)
-#cmd = sbobj.get_submit_command()
-
 sb_time = int(now())
 cmd = ['gobject', 'submit', '0', '1', str(sb_time), sbobj.dashd_serialise()]
 object_hash = node1.rpc_command(*cmd)
@@ -64,8 +61,8 @@ log3.expect('govobj_accepted:{0}'.format(object_hash), 1)
 log2.expect_minimum('push_inventory:govobj {0}'.format(object_hash), 1)
 log3.expect_minimum('push_inventory:govobj {0}'.format(object_hash), 1)
 
-print '\nwaiting 15 seconds'
-time.sleep(15)
+print '\nwaiting 10 seconds'
+time.sleep(10)
 
 print 'try send duplicate object'
 
@@ -109,7 +106,8 @@ sb_time = int(ratecheckbuffer[0] + (nSuperblockCycleSeconds*5/2.2)-1)
 delay = sb_time - now()
 print 'wait {0} minutes\n'.format(delay/60.)
 assert delay > 0
-time.sleep(sb_time - now() - 1)
+#time.sleep(sb_time - now() - 1)
+node2.rpc_command('setmocktime', sb_time)
 cmd[4] = str(sb_time)
 object_hash = node1.rpc_command(*cmd)
 
