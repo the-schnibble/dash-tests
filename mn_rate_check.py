@@ -13,13 +13,13 @@ def now():
     return int(time.time())
     
 #CTestNetParams
-nPowTargetSpacing = 2.5 * 60
+nPowTargetSpacing = 1 * 60
 
 #node1 should be a masternode started with "-govtest" parameter
-node1 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20007')
+node1 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30001')
 #node2 and node3 are regular masternodes
-node2 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20002')
-node3 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20003')
+node2 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30002')
+node3 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30003')
 
 log1 = testtools.LogListener('/tmp/node1', 10)
 log2 = testtools.LogListener('/tmp/node2', 10)
@@ -28,8 +28,8 @@ log3 = testtools.LogListener('/tmp/node3', 10)
 nSuperblockCycleSeconds = node1.superblockcycle() * nPowTargetSpacing
 
 while(not node1.is_synced() or not node2.is_synced() or not node3.is_synced()):
-    print('not yet synced, sleep 30 sec')
-    time.sleep(30)
+    print('not yet synced, sleep 5 sec')
+    time.sleep(5)
 
 # create properly signed trigger that should be accepted as preliminarily valid
 
@@ -108,7 +108,6 @@ sb_time = int(ratecheckbuffer[0] + (nSuperblockCycleSeconds*5/2.2)-1)
 # wait ~136 minutes (for testnet)
 delay = sb_time - now()
 print 'wait {0} minutes\n'.format(delay/60.)
-delay = delay
 assert delay > 0
 time.sleep(sb_time - now() - 1)
 cmd[4] = str(sb_time)

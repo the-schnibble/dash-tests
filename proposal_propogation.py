@@ -14,36 +14,38 @@ def now():
     
 def get_confirmations(dashd, txid):
     try:
-	r = dashd.rpc_command("getrawtransaction", txid, 1)
+        r = dashd.rpc_command("getrawtransaction", txid, 1)
     except:
-	return 0
+        return 0
     if r.get('confirmations') is None:
-	return 0
+        return 0
     return int(r.get('confirmations'))
-	    
+        
 def wait_confirmations(dashd, loglistener, txid, count):
     while True:
-	confirmations = get_confirmations(dashd, txid)
-	if confirmations >= count:
-	    break
+        confirmations = get_confirmations(dashd, txid)
+        if confirmations >= count:
+            break
 
-	block_height = int(node1.rpc_command("getblockcount")) + count - confirmations
-	loglistener.expect('update_block_tip:{0}'.format(block_height), 1, 600)
+        block_height = int(node1.rpc_command("getblockcount")) + count - confirmations
+        #generate required number of blocks
+        dashd.rpc_command('generate', count - confirmations)
+        loglistener.expect('update_block_tip:{0}'.format(block_height), 1, 600)
 
 
 #node1 should be a node started with "-govtest" parameter
-node1 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20007')
+node1 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30010')
 #node2 and node3 are regular nodes
-node2 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20002')
-node3 = DashDaemon(host = '127.0.0.1', user='user', password = '1', port = '20003')
+node2 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30008')
+node3 = DashDaemon(host = '127.0.0.1', user='user', password = 'pass', port = '30009')
 
-log1 = testtools.LogListener('/tmp/node1', 10)
-log2 = testtools.LogListener('/tmp/node2', 10)
-log3 = testtools.LogListener('/tmp/node3', 10)
+log1 = testtools.LogListener('/tmp/node10', 10)
+log2 = testtools.LogListener('/tmp/node8', 10)
+log3 = testtools.LogListener('/tmp/node9', 10)
 
 while(not node1.is_synced() or not node2.is_synced() or not node3.is_synced()):
-    print('not yet synced, sleep 30 sec')
-    time.sleep(30)
+    print('not yet synced, sleep 5 sec')
+    time.sleep(5)
 
 # create proposal
 
@@ -88,7 +90,7 @@ except:
     pass
 else:
     if get_confirmations(node2, tx_hash0) < 1:
-	assert False, "TEST FAILED: proposal submitted with zero confirmations"
+        assert False, "TEST FAILED: proposal submitted with zero confirmations"
 
 #submit by special test node
 object_hash0 = node1.rpc_command(*cmd)
@@ -113,7 +115,6 @@ proposal.url = 'https://dashcentral.com/' + proposal.name + '_' + str(curunixtim
 tx_hash = node2.rpc_command(*proposal.get_prepare_command())
 print 'new collateral tx hash: {0}\n'.format(tx_hash)
 log2.expect_minimum('push_inventory:tx {0}'.format(tx_hash), 1)
-
 
 print '\nwaiting for 1 confirmation\n'
 wait_confirmations(node2, log2, tx_hash, 1)
